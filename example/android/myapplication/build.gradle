@@ -28,6 +28,9 @@ android {
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
+
+        testBuildType System.getProperty('testBuildType', 'debug')
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -59,17 +62,23 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    def hermesPath = "../../../node_modules/hermes-engine/android/";
+    implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
+    implementation "androidx.appcompat:appcompat:1.0.0"
+
+    implementation 'com.facebook.soloader:soloader:0.9.0+'
+    implementation 'com.facebook.react:react-native:+'
+
+    implementation project(':react-native-notifications')
+
+    def hermesPath = "../../../node_modules/hermes-engine/android/"
     exec {
         executable 'grep'
         args "version", '../../../node_modules/hermes-engine/package.json'
     }
     debugImplementation files(hermesPath + "hermes-debug.aar")
     releaseImplementation files(hermesPath + "hermes-release.aar")
-    implementation "org.jetbrains.kotlin:$kotlinStdlib:$kotlinVersion"
-    implementation "androidx.appcompat:appcompat:1.0.0"
-    implementation 'com.facebook.react:react-native:+'
-    implementation project(':react-native-notifications')
+
+    androidTestImplementation('com.wix:detox:+') { transitive = true }
 }
 
 apply plugin: 'com.google.gms.google-services'

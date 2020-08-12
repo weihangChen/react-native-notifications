@@ -2,6 +2,7 @@ const _ = require('lodash');
 const exec = require('shell-utils').exec;
 
 const android = _.includes(process.argv, '--android');
+const iOS = !android;
 const release = _.includes(process.argv, '--release');
 const skipBuild = _.includes(process.argv, '--skipBuild');
 const headless = _.includes(process.argv, '--headless');
@@ -17,8 +18,8 @@ function run() {
     const workers = multi ? 3 : 1;
     
     if (!skipBuild) {
-        exec.execSync('npm run pod-install');
+        if (iOS) exec.execSync('npm run pod-install');
         exec.execSync(`detox build --configuration ${configuration}`);
     }
-    exec.execSync(`detox test --loglevel verbose --configuration ${configuration} ${headless$} ${!android ? `-w ${workers}` : ``}`); //-f "ScreenStyle.test.js" --loglevel trace
+    exec.execSync(`detox test --loglevel verbose --configuration ${configuration} ${headless$} -w ${workers}`); //-f "ScreenStyle.test.js" --loglevel trace
 }

@@ -33,6 +33,8 @@
     "clean": "node ./scripts/clean",
     "test-e2e-ios": "node ./scripts/test-e2e --ios",
     "test-e2e-ios-release": "node ./scripts/test-e2e --ios --release",
+    "test-e2e-android": "node ./scripts/test-e2e --android",
+    "test-e2e-ios-android": "node ./scripts/test-e2e --android --release",
     "test-unit-ios": "node ./scripts/test-unit --ios",
     "test-unit-android": "node ./scripts/test-unit --android",
     "test-js": "node ./scripts/test-js",
@@ -99,6 +101,18 @@
         "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme NotificationsExampleApp_release -workspace example/ios/NotificationsExampleApp.xcworkspace -sdk iphonesimulator -configuration Release -derivedDataPath example/ios/DerivedData/NotificationsExampleApp ONLY_ACTIVE_ARCH=YES -quiet -UseModernBuildSystem=NO",
         "type": "ios.simulator",
         "name": "iPhone 11"
+      },
+      "android.emu.debug": {
+        "binaryPath": "example/android/myapplication/build/outputs/apk/debug/myapplication-debug.apk",
+        "build": "cd example/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug",
+        "type": "android.emulator",
+        "name": "Pixel_API_28"
+      },
+      "android.emu.release": {
+        "binaryPath": "example/android/myapplication/build/outputs/apk/release/myapplication-release.apk",
+        "build": "cd example/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release",
+        "type": "android.emulator",
+        "name": "Pixel_API_28"
       }
     }
   },
